@@ -1,6 +1,6 @@
 {
   "name": "formatmicro",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Formats microseconds into a human consumable form.",
   "license": "MIT",
   "repository": "cullylarson/formatmicro",
@@ -16,6 +16,7 @@
     "prepublish": "npm run compile",
     "test": "npm run compile && mocha --require babel-register"
   },
+  "main": "dist/index.js",
   "files": [
     "dist/index.js"
   ],

@@ -104,6 +104,18 @@ describe('Format Micro', () => {
         })
     })
 
+    describe("For increments with zeros", () => {
+        it("Should not output them", () => {
+            const totalTimeOne = oneD + oneH + 0*oneM + oneS + oneMs + oneµs
+            const totalTimeMulti1 = 0*oneD + 12*oneH + 16*oneM +  0*oneS + 9*oneMs + 6*oneµs
+            const totalTimeMulti2 = 4*oneD +  0*oneH + 16*oneM + 59*oneS + 0*oneMs + 6*oneµs
+
+            assert.equal(formatmicro(totalTimeOne), "1 d 1 h 1 s 1 ms 1 µs")
+            assert.equal(formatmicro(totalTimeMulti1), "12 h 16 m 9 ms 6 µs")
+            assert.equal(formatmicro(totalTimeMulti2), "4 d 16 m 59 s 6 µs")
+        })
+    })
+
     describe("For custom increment names array", () => {
         it("Should use the singular custom names", () => {
             const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs

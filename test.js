@@ -1,5 +1,5 @@
 import assert from 'assert'
-import formatmicro from "./index.js"
+import formatmicro from "./dist/index.js"
 
 const oneµs = 1
 const oneMs = 1000

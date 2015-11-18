@@ -19,9 +19,9 @@ export default (timeMicro, incrementNames) => {
         formatReduce = (carry, incrementName, value) => {
             if(value === 0) return carry
             else return carry +
-                    ((carry === "") ? "" : " ") +
-                    value.toString() + " " +
-                    ((value === 1) ? incrementNames[incrementName][0] : incrementNames[incrementName][1])
+                ((carry === "") ? "" : " ") +
+                value.toString() + " " +
+                ((value === 1) ? incrementNames[incrementName][0] : incrementNames[incrementName][1])
         }
     }
 

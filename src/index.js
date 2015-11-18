@@ -1,6 +1,19 @@
-'use strict';
-export default (timeMicro, incrementNames) => {
-    let formatReduce;
+'use strict'
+/**
+ * @module formatmicro
+ */
+
+/**
+ * @param {number} timeMicro
+ * @param {object|function} incrementNames
+ * @returns {string}
+ * @throws {Error} If either argument isn't the correct type
+ */
+export default function formatmicro(timeMicro, incrementNames) {
+    if(Number(parseFloat(timeMicro)) !== timeMicro) throw new Error("First parameter must be a number.")
+    if(incrementNames && (typeof incrementNames !== "function") && (typeof incrementNames !== "object")) throw new Error("Second parameter, if provided, must be a function or an object")
+
+    let formatReduce
 
     if(incrementNames && typeof incrementNames === "function") {
         formatReduce = incrementNames

@@ -177,4 +177,28 @@ describe('Format Micro', () => {
             assert.equal(formatmicro(totalTimeMult, customIncrementReduce), "4 12 16")
         })
     })
+
+    describe("For custom increment reduce function", () => {
+        it("Should return nothing", () => {
+            assert.equal(formatmicro(0), "")
+        })
+    })
+
+    describe("For non-numeric values", () => {
+        it("Should throw an exception", () => {
+            assert.throws(() => formatmicro({}), Error)
+        })
+    })
+
+    describe("For non-object, non-function second parameters", () => {
+        it("Should throw an exception", () => {
+            assert.throws(() => formatmicro(100, "bad"), Error)
+        })
+    })
+
+    describe("For array as second parameters", () => {
+        it("Should perform normally", () => {
+            assert.equal(formatmicro(1000, []), "1 ms")
+        })
+    })
 })

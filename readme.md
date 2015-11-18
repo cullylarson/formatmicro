@@ -1,4 +1,4 @@
-# formatmicro [![Docs Status](https://doc.esdoc.org/github.com/cullylarson/formatmicro/badge.svg)](https://doc.esdoc.org/github.com/cullylarson/formatmicro/)
+# formatmicro [![Build Status](https://travis-ci.org/cullylarson/formatmicro.svg?branch=master)](https://travis-ci.org/cullylarson/formatmicro) [![Docs Status](https://doc.esdoc.org/github.com/cullylarson/formatmicro/badge.svg)](https://doc.esdoc.org/github.com/cullylarson/formatmicro/)
 
 > Formats microseconds into a human consumable form.
 

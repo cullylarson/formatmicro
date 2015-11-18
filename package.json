@@ -15,7 +15,7 @@
     "compile": "babel -d dist/ src/",
     "prepublish": "npm run compile",
     "test": "npm run compile && mocha --require babel-register",
-    "docs": "esdoc -c .esdoc.json"
+    "docs": "esdoc -c esdoc.json"
   },
   "main": "dist/index.js",
   "files": [

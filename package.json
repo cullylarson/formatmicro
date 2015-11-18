@@ -1,6 +1,6 @@
 {
   "name": "formatmicro",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Formats microseconds into a human consumable form.",
   "license": "MIT",
   "repository": "cullylarson/formatmicro",

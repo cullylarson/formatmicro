@@ -63,7 +63,7 @@ describe('Format Micro', () => {
     })
 
     describe("For multiple increments", () => {
-        it("Should work with microseconds and seconds", () => {
+        it("Should work with microseconds and milliseconds", () => {
             const totalTimeOne = oneMs + oneµs
             const totalTimeMult = 9*oneMs + 6*oneµs
 
@@ -71,48 +71,98 @@ describe('Format Micro', () => {
             assert.equal(formatmicro(totalTimeMult), "9 ms 6 µs")
         })
 
-        it("Should work with microseconds and seconds and minutes", () => {
-            const totalTimeOne = oneM + oneMs + oneµs
-            const totalTimeMult = 16*oneM + 9*oneMs + 6*oneµs
+        it("Should work with microseconds and milliseconds and seconds", () => {
+            const totalTimeOne = oneMs + oneS + oneµs
+            const totalTimeMult = 59*oneS + 9*oneMs + 6*oneµs
 
-            assert.equal(formatmicro(totalTimeOne), "1 m 1 ms 1 µs")
-            assert.equal(formatmicro(totalTimeMult), "16 m 9 ms 6 µs")
+            assert.equal(formatmicro(totalTimeOne), "1 s 1 ms 1 µs")
+            assert.equal(formatmicro(totalTimeMult), "59 s 9 ms 6 µs")
+        })
+
+        it("Should work with microseconds and seconds and minutes", () => {
+            const totalTimeOne = oneM + oneMs + oneS + oneµs
+            const totalTimeMult = 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+            assert.equal(formatmicro(totalTimeOne), "1 m 1 s 1 ms 1 µs")
+            assert.equal(formatmicro(totalTimeMult), "16 m 59 s 9 ms 6 µs")
         })
 
         it("Should work with microseconds and seconds and minutes and hours", () => {
-            const totalTimeOne = oneH + oneM + oneMs + oneµs
-            const totalTimeMult = 12*oneH + 16*oneM + 9*oneMs + 6*oneµs
+            const totalTimeOne = oneH + oneM + oneS + oneMs + oneµs
+            const totalTimeMult = 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
 
-            assert.equal(formatmicro(totalTimeOne), "1 h 1 m 1 ms 1 µs")
-            assert.equal(formatmicro(totalTimeMult), "12 h 16 m 9 ms 6 µs")
+            assert.equal(formatmicro(totalTimeOne), "1 h 1 m 1 s 1 ms 1 µs")
+            assert.equal(formatmicro(totalTimeMult), "12 h 16 m 59 s 9 ms 6 µs")
         })
 
         it("Should work with microseconds and seconds and minutes and hours and days", () => {
-            const totalTimeOne = oneD + oneH + oneM + oneMs + oneµs
-            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 9*oneMs + 6*oneµs
+            const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs
+            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
 
-            assert.equal(formatmicro(totalTimeOne), "1 d 1 h 1 m 1 ms 1 µs")
-            assert.equal(formatmicro(totalTimeMult), "4 d 12 h 16 m 9 ms 6 µs")
+            assert.equal(formatmicro(totalTimeOne), "1 d 1 h 1 m 1 s 1 ms 1 µs")
+            assert.equal(formatmicro(totalTimeMult), "4 d 12 h 16 m 59 s 9 ms 6 µs")
         })
     })
 
     describe("For custom increment names array", () => {
         it("Should use the singular custom names", () => {
-            const totalTimeOne = oneD + oneH + oneM + oneMs + oneµs
+            const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs
 
-            assert.equal(formatmicro(totalTimeOne, customIncrementNames), "1 day 1 hour 1 minute 1 millisecond 1 microsecond")
+            assert.equal(formatmicro(totalTimeOne, customIncrementNames), "1 day 1 hour 1 minute 1 second 1 millisecond 1 microsecond")
         })
 
         it("Should use the plural custom names", () => {
-            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 9*oneMs + 6*oneµs
+            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
 
-            assert.equal(formatmicro(totalTimeMult, customIncrementNames), "4 days 12 hours 16 minutes 9 milliseconds 6 microseconds")
+            assert.equal(formatmicro(totalTimeMult, customIncrementNames), "4 days 12 hours 16 minutes 59 seconds 9 milliseconds 6 microseconds")
         })
 
         it("Should use the plural and singular custom names", () => {
-            const totalTimeMixed = oneD + 12*oneH + oneM + 9*oneMs + oneµs
+            const totalTimeMixed = oneD + 12*oneH + oneM + 59*oneS + 9*oneMs + oneµs
 
-            assert.equal(formatmicro(totalTimeMixed, customIncrementNames), "1 day 12 hours 1 minute 9 milliseconds 1 microsecond")
+            assert.equal(formatmicro(totalTimeMixed, customIncrementNames), "1 day 12 hours 1 minute 59 seconds 9 milliseconds 1 microsecond")
+        })
+    })
+
+    describe("For custom increment reduce function", () => {
+        it("Should use the function", () => {
+            const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs
+
+            const customIncrementReduce = (carry, incrementKey, value) => {
+                if(incrementKey === 'd') return "find me!"
+                else return carry
+            }
+
+            assert.equal(formatmicro(totalTimeOne, customIncrementReduce), "find me!")
+        })
+
+        it("Should use the function for all values", () => {
+            const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs
+            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+            const customIncrementReduce = (carry, incrementKey, value) => {
+                return carry + ((carry !== "") ? " " : "") + value.toString()
+            }
+
+            assert.equal(formatmicro(totalTimeOne, customIncrementReduce), "1 1 1 1 1 1")
+            assert.equal(formatmicro(totalTimeMult, customIncrementReduce), "4 12 16 59 9 6")
+        })
+
+        it("Shouldn't output the values I choose not to", () => {
+            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+            // only output the first three found values
+            let foundNum = 0
+            const customIncrementReduce = (carry, incrementKey, value) => {
+                if(foundNum >= 3) return carry
+                if(value === 0) return carry
+
+                foundNum++
+
+                return carry + ((carry !== "") ? " " : "") + value.toString()
+            }
+
+            assert.equal(formatmicro(totalTimeMult, customIncrementReduce), "4 12 16")
         })
     })
 })

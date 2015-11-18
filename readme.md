@@ -26,6 +26,23 @@ const period = end - start
 console.log("Task completed in: " + formatmicro(period))
 ```
 
+```js
+import formatmicro from 'formatmicro'
+
+const oneµs = 1
+const oneMs = 1000
+const oneS  = 1000*1000
+const oneM  = 60*1000*1000
+const oneH  = 60*60*1000*1000
+const oneD  = 24*60*60*1000*1000
+
+const totalTime = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+console.log(formatmicro(totalTimeMult))
+// "4 d 12 h 16 m 59 s 9 ms 6 µs"
+
+```
+
 ## Options
 
 You can optionally pass the names of the increments (e.g hours, minutes, days, etc.) as the second

@@ -39,7 +39,7 @@ const oneD  = 24*60*60*1000*1000
 const totalTime = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
 
 console.log(formatmicro(totalTimeMult))
-// "4 d 12 h 16 m 59 s 9 ms 6 µs"
+// 4 d 12 h 16 m 59 s 9 ms 6 µs
 
 ```
 
@@ -53,15 +53,16 @@ first item is the singular name of the increment (e.g day) and the second item i
 For example:
 
 ```js
-import microseconds from 'microseconds'
 import formatmicro from 'formatmicro'
 
-const start = microseconds.now()
+const oneµs = 1
+const oneMs = 1000
+const oneS  = 1000*1000
+const oneM  = 60*1000*1000
+const oneH  = 60*60*1000*1000
+const oneD  = 24*60*60*1000*1000
 
-// do some stuf
-
-const end = microseconds.now()
-const period = end - start
+const totalTime = oneD + 12*oneH + 16*oneM + 59*oneS + oneMs + 6*oneµs
 
 const incrementNames = {
     'd' : ['day', 'days'],
@@ -72,7 +73,8 @@ const incrementNames = {
     'µs' : ['microsecond', 'microseconds'],
 }
 
-console.log("Task completed in: " + formatmicro(period, incrementNames))
+console.log("Task completed in: " + formatmicro(totalTime, incrementNames))
+// Task completed in: 1 day 12 hours 16 minutes 59 seconds 1 millisecond 6 microseconds
 ```
 
 ### Custom Reducer

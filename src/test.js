@@ -88,7 +88,7 @@ describe('Format Micro', () => {
             assert.equal(formatmicro(totalTimeMult), "59 s 9 ms 6 µs")
         })
 
-        it("Should work with microseconds and seconds and minutes", () => {
+        it("Should work with microseconds and milliseconds and seconds and minutes", () => {
             const totalTimeOne = oneM + oneMs + oneS + oneµs
             const totalTimeMult = 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
 
@@ -96,7 +96,7 @@ describe('Format Micro', () => {
             assert.equal(formatmicro(totalTimeMult), "16 m 59 s 9 ms 6 µs")
         })
 
-        it("Should work with microseconds and seconds and minutes and hours", () => {
+        it("Should work with microseconds and milliseconds and seconds and minutes and hours", () => {
             const totalTimeOne = oneH + oneM + oneS + oneMs + oneµs
             const totalTimeMult = 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
 
@@ -104,7 +104,7 @@ describe('Format Micro', () => {
             assert.equal(formatmicro(totalTimeMult), "12 h 16 m 59 s 9 ms 6 µs")
         })
 
-        it("Should work with microseconds and seconds and minutes and hours and days", () => {
+        it("Should work with microseconds and milliseconds and seconds and minutes and hours and days", () => {
             const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs
             const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
 

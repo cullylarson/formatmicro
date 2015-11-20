@@ -145,6 +145,20 @@ describe('Format Micro', () => {
         })
     })
 
+    describe("For custom increment names array, with only some names provided", () => {
+        it("Should use the provided ones, and the defaults for the ones not provided", () => {
+            const someIncrementNames = {
+                'd': ['day', 'days'],
+                'h': ['hour', 'hours'],
+                'ms' : ['millisecond', 'milliseconds'],
+            }
+
+            const totalTimeMult = 4*oneD + oneH + 16*oneM + 59*oneS + 300*oneMs + 6*oneµs
+
+            assert.equal(formatmicro(totalTimeMult, someIncrementNames), "4 days 1 hour 16 m 59 s 300 milliseconds 6 µs")
+        })
+    })
+
     describe("For custom increment reduce function", () => {
         it("Should use the function", () => {
             const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs

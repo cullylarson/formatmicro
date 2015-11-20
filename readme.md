@@ -210,6 +210,8 @@ const formatReduce = (carry, incrementKey, value) => {
         value.toString() + " " +
         incrementKey
 }
+
+console.log("Task completed in: " + formatmicro(period, formatReduce))
 ```
 
 

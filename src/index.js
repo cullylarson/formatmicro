@@ -1,5 +1,9 @@
 'use strict'
 
+/**
+ * @module formatmicro
+ */
+
 const defaultIncrementNames = {
     'd': ['d', 'd'],
     'h': ['h', 'h'],
@@ -8,9 +12,6 @@ const defaultIncrementNames = {
     'ms': ['ms', 'ms'],
     'µs': ['µs', 'µs'],
 }
-/**
- * @module formatmicro
- */
 
 /**
  * Formats microseconds into strings that look like:  1 d 3 h 7 m 28 s 500 ms 324 µs

@@ -187,7 +187,7 @@ describe('Format Micro', () => {
         })
     })
 
-    describe("For custom increment reduce function", () => {
+    describe("For zero microseconds", () => {
         it("Should return nothing", () => {
             assert.equal(formatmicro(0), "")
         })

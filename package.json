@@ -16,7 +16,7 @@
     "prepublish": "npm run compile",
     "docs": "esdoc -c esdoc.json",
     "test": "npm run compile && mocha dist/test.js",
-    "coverage": "nyc npm test && nyc report",
+    "coverage": "nyc npm test && nyc report --reporter=html",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "main": "dist/index.js",

@@ -250,6 +250,7 @@ describe("Only Two", () => {
             assert.equal(onlytwo(totalTimeMult), "4 d 1 h")
         })
     })
+
     describe("For some zero values", () => {
         it("Should format only the first two non-zero", () => {
             const totalTimeMult = 4*oneD + 59*oneS + 9*oneMs + 6*oneµs
@@ -257,6 +258,7 @@ describe("Only Two", () => {
             assert.equal(onlytwo(totalTimeMult), "4 d 59 s")
         })
     })
+
     describe("For custom increment names array", () => {
         it("Should use the singular custom names", () => {
             const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs
@@ -274,6 +276,22 @@ describe("Only Two", () => {
             const totalTimeMixed = 12*oneH + oneS + 9*oneMs + oneµs
 
             assert.equal(onlytwo(totalTimeMixed, customIncrementNames), "12 hours 1 second")
+        })
+    })
+
+    describe("For custom reduce function", () => {
+        it("Should use the custom reduce function", () => {
+            const formatReduce = (carry, incrementKey, value) => {
+                if(value === 0) return carry
+                else return carry +
+                    ((carry === "") ? "" : " ") +
+                    value.toString() + " " +
+                    ((value === 1) ? customIncrementNames[incrementKey][0] : customIncrementNames[incrementKey][1])
+            }
+
+            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+            assert.equal(onlytwo(totalTimeMult, formatReduce), "4 days 12 hours 16 minutes 59 seconds 9 milliseconds 6 microseconds")
         })
     })
 })

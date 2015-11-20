@@ -1,5 +1,5 @@
 import assert from 'assert'
-import formatmicro from "./../dist/index.js"
+import {default as formatmicro, bignames, onlytwo} from "./../dist/index.js"
 
 const oneµs = 1
 const oneMs = 1000
@@ -15,6 +15,15 @@ const customIncrementNames = {
     's' : ['second', 'seconds'],
     'ms' : ['millisecond', 'milliseconds'],
     'µs' : ['microsecond', 'microseconds'],
+}
+
+const defaultIncrementNames = {
+    'd': ['d', 'd'],
+    'h': ['h', 'h'],
+    'm': ['m', 'm'],
+    's': ['s', 's'],
+    'ms': ['ms', 'ms'],
+    'µs': ['µs', 'µs'],
 }
 
 describe('Format Micro', () => {
@@ -199,6 +208,72 @@ describe('Format Micro', () => {
     describe("For array as second parameters", () => {
         it("Should perform normally", () => {
             assert.equal(formatmicro(1000, []), "1 ms")
+        })
+    })
+})
+
+describe("Big Names", () => {
+    describe("For mixed increments", () => {
+        it("Should use the singular custom names", () => {
+            const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs
+
+            assert.equal(bignames(totalTimeOne), "1 day 1 hour 1 minute 1 second 1 millisecond 1 microsecond")
+        })
+
+        it("Should use the plural custom names", () => {
+            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+            assert.equal(bignames(totalTimeMult), "4 days 12 hours 16 minutes 59 seconds 9 milliseconds 6 microseconds")
+        })
+
+        it("Should use the plural and singular custom names", () => {
+            const totalTimeMixed = oneD + 12*oneH + oneM + 59*oneS + 9*oneMs + oneµs
+
+            assert.equal(bignames(totalTimeMixed), "1 day 12 hours 1 minute 59 seconds 9 milliseconds 1 microsecond")
+        })
+    })
+
+    describe("For alternate increment names array", () => {
+        it("Should use the alternate names", () => {
+            const totalTimeMixed = oneD + 12*oneH + oneM + 59*oneS + 9*oneMs + oneµs
+
+            assert.equal(bignames(totalTimeMixed, defaultIncrementNames), "1 d 12 h 1 m 59 s 9 ms 1 µs")
+        })
+    })
+})
+
+describe("Only Two", () => {
+    describe("For all non-zero values", () => {
+        it("Should format only the first two", () => {
+            const totalTimeMult = 4*oneD + oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+            assert.equal(onlytwo(totalTimeMult), "4 d 1 h")
+        })
+    })
+    describe("For some zero values", () => {
+        it("Should format only the first two non-zero", () => {
+            const totalTimeMult = 4*oneD + 59*oneS + 9*oneMs + 6*oneµs
+
+            assert.equal(onlytwo(totalTimeMult), "4 d 59 s")
+        })
+    })
+    describe("For custom increment names array", () => {
+        it("Should use the singular custom names", () => {
+            const totalTimeOne = oneD + oneH + oneM + oneS + oneMs + oneµs
+
+            assert.equal(onlytwo(totalTimeOne, customIncrementNames), "1 day 1 hour")
+        })
+
+        it("Should use the plural custom names", () => {
+            const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+            assert.equal(onlytwo(totalTimeMult, customIncrementNames), "4 days 12 hours")
+        })
+
+        it("Should use the plural and singular custom names", () => {
+            const totalTimeMixed = 12*oneH + oneS + 9*oneMs + oneµs
+
+            assert.equal(onlytwo(totalTimeMixed, customIncrementNames), "12 hours 1 second")
         })
     })
 })

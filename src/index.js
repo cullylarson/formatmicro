@@ -1,15 +1,26 @@
 'use strict'
+
+const defaultIncrementNames = {
+    'd': ['d', 'd'],
+    'h': ['h', 'h'],
+    'm': ['m', 'm'],
+    's': ['s', 's'],
+    'ms': ['ms', 'ms'],
+    'µs': ['µs', 'µs'],
+}
 /**
  * @module formatmicro
  */
 
 /**
+ * Formats microseconds into strings that look like:  1 d 3 h 7 m 28 s 500 ms 324 µs
+ *
  * @param {number} timeMicro
- * @param {object|function} incrementNames
+ * @param {object|function|undefined} incrementNames
  * @returns {string}
  * @throws {Error} If either argument isn't the correct type
  */
-export default function formatmicro(timeMicro, incrementNames) {
+const formatmicro = (timeMicro, incrementNames) => {
     if(Number(parseFloat(timeMicro)) !== timeMicro) throw new Error("First parameter must be a number.")
     if(incrementNames && (typeof incrementNames !== "function") && (typeof incrementNames !== "object")) throw new Error("Second parameter, if provided, must be a function or an object")
 
@@ -20,21 +31,16 @@ export default function formatmicro(timeMicro, incrementNames) {
     }
     else {
         incrementNames = {
-            'd' : ['d', 'd'],
-            'h' : ['h', 'h'],
-            'm' : ['m', 'm'],
-            's' : ['s', 's'],
-            'ms' : ['ms', 'ms'],
-            'µs' : ['µs', 'µs'],
+            ...defaultIncrementNames,
             ...incrementNames,
         }
 
-        formatReduce = (carry, incrementName, value) => {
+        formatReduce = (carry, incrementKey, value) => {
             if(value === 0) return carry
             else return carry +
                 ((carry === "") ? "" : " ") +
                 value.toString() + " " +
-                ((value === 1) ? incrementNames[incrementName][0] : incrementNames[incrementName][1])
+                ((value === 1) ? incrementNames[incrementKey][0] : incrementNames[incrementKey][1])
         }
     }
 
@@ -58,4 +64,71 @@ export default function formatmicro(timeMicro, incrementNames) {
         if(!increments.hasOwnProperty(key)) return carry
         else return formatReduce(carry, key, parts[key])
     }, "")
+}
+
+/**
+ * Formats microseconds into strings that look like:  1 day 3 hours 7 minutes 28 seconds 500 milliseconds 324 microseconds
+ *
+ * @param {number} timeMicro
+ * @param {object|function|undefined} incrementNames
+ * @returns {string}
+ * @throws {Error} If either argument isn't the correct type
+ */
+const bignames = (timeMicro, incrementNames) => {
+    if(!incrementNames || (typeof incrementNames === "object")) {
+        incrementNames = {
+            'd' : ['day', 'days'],
+            'h' : ['hour', 'hours'],
+            'm' : ['minute', 'minutes'],
+            's' : ['second', 'seconds'],
+            'ms' : ['millisecond', 'milliseconds'],
+            'µs' : ['microsecond', 'microseconds'],
+            ...incrementNames,
+        }
+    }
+
+    return formatmicro(timeMicro, incrementNames)
+}
+
+/**
+ * Same as {@link formatmicro}, except it only returns the first two non-zero values.
+ *
+ * @param {number} timeMicro
+ * @param {object|function|undefined} incrementNames
+ * @returns {string}
+ * @throws {Error} If either argument isn't the correct type
+ */
+const onlytwo = (timeMicro, incrementNames) => {
+    if(!incrementNames || (typeof incrementNames === "object")) {
+        incrementNames = {
+            ...defaultIncrementNames,
+            ...incrementNames,
+        }
+    }
+    else if(typeof incrementNames === "function") {
+        return formatmicro(timeMicro, incrementNames)
+    }
+
+    let foundNum = 0
+    const takeFor = 2
+    const formatReduce = (carry, incrementKey, value) => {
+        if(foundNum >= takeFor) return carry
+        if(value === 0) return carry
+
+        foundNum++
+
+        return carry +
+            ((carry === "") ? "" : " ") +
+            value.toString() + " " +
+            ((value === 1) ? incrementNames[incrementKey][0] : incrementNames[incrementKey][1])
+    }
+
+    return formatmicro(timeMicro, formatReduce)
+}
+
+export {
+    formatmicro as default,
+    formatmicro,
+    bignames,
+    onlytwo,
 }

@@ -116,6 +116,10 @@ console.log("Task completed in: " + onlytwo(totalTime, incrementNames))
 // Task completed in: 12 hours 1 second
 ```
 
+### onlytwoBignames
+
+Just like `onlytwo`, but uses "bignames".
+
 ## Options
 
 You can optionally pass the names of the increments (e.g hours, minutes, days, etc.) as the second

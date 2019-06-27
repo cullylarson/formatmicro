@@ -13,6 +13,15 @@ const defaultIncrementNames = {
     'µs': ['µs', 'µs'],
 }
 
+const bignamesIncrepementNames = {
+    'd' : ['day', 'days'],
+    'h' : ['hour', 'hours'],
+    'm' : ['minute', 'minutes'],
+    's' : ['second', 'seconds'],
+    'ms' : ['millisecond', 'milliseconds'],
+    'µs' : ['microsecond', 'microseconds'],
+}
+
 /**
  * Formats microseconds into strings that look like:  1 d 3 h 7 m 28 s 500 ms 324 µs
  *
@@ -78,12 +87,7 @@ const formatmicro = (timeMicro, incrementNames) => {
 const bignames = (timeMicro, incrementNames) => {
     if(!incrementNames || (typeof incrementNames === "object")) {
         incrementNames = {
-            'd' : ['day', 'days'],
-            'h' : ['hour', 'hours'],
-            'm' : ['minute', 'minutes'],
-            's' : ['second', 'seconds'],
-            'ms' : ['millisecond', 'milliseconds'],
-            'µs' : ['microsecond', 'microseconds'],
+            ...bignamesIncrepementNames,
             ...incrementNames,
         }
     }
@@ -127,9 +131,21 @@ const onlytwo = (timeMicro, incrementNames) => {
     return formatmicro(timeMicro, formatReduce)
 }
 
+const onlytwoBignames = (timeMicro, incrementNames) => {
+    if(!incrementNames || (typeof incrementNames === "object")) {
+        incrementNames = {
+            ...bignamesIncrepementNames,
+            ...incrementNames,
+        }
+    }
+
+    return onlytwo(timeMicro, incrementNames)
+}
+
 export {
     formatmicro as default,
     formatmicro,
     bignames,
     onlytwo,
+    onlytwoBignames,
 }

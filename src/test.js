@@ -1,5 +1,5 @@
 import assert from 'assert'
-import {default as formatmicro, bignames, onlytwo} from "./../dist/index.js"
+import {default as formatmicro, bignames, onlytwo, onlytwoBignames} from "./../dist/index.js"
 
 const oneµs = 1
 const oneMs = 1000
@@ -306,6 +306,24 @@ describe("Only Two", () => {
             const totalTimeMult = 4*oneD + 12*oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
 
             assert.equal(onlytwo(totalTimeMult, formatReduce), "4 days 12 hours 16 minutes 59 seconds 9 milliseconds 6 microseconds")
+        })
+    })
+})
+
+describe("onlytwoBignames", () => {
+    describe("For all non-zero values", () => {
+        it("Should format only the first two", () => {
+            const totalTimeMult = 4*oneD + oneH + 16*oneM + 59*oneS + 9*oneMs + 6*oneµs
+
+            assert.equal(onlytwoBignames(totalTimeMult), "4 days 1 hour")
+        })
+    })
+
+    describe("For some zero values", () => {
+        it("Should format only the first two non-zero", () => {
+            const totalTimeMult = 4*oneD + 59*oneS + 9*oneMs + 6*oneµs
+
+            assert.equal(onlytwoBignames(totalTimeMult), "4 days 59 seconds")
         })
     })
 })

@@ -37,7 +37,7 @@
     "babel-preset-stage-0": "^6.1.18",
     "coveralls": "^2.11.4",
     "esdoc-es7-plugin": "0.0.3",
-    "mocha": "^2.3.4",
-    "nyc": "^3.2.2"
+    "mocha": "^10.1.0",
+    "nyc": "^15.1.0"
   }
 }
